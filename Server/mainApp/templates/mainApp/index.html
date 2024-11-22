@@ -3,9 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>FACEOFF</title>
 </head>
 <body>
-    <p>Hail</p>
+    <header class="header">
+        <div class="container">
+            <div class="header_inner">
+                <div class="header_logo">Copybara + Pastebara</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="intro">
+        <div class="container">
+            <div class="intro_text">
+                <h1>FACEOFF</h1>
+                <p> - приложение для обработки видеофайлов, обеспечивающее приватность за счёт автоматической маскировки лиц.</p>
+            </div>
+            <div class="intro_image">
+                <img src="static/images/facial_4944629.png" alt="biometry">
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Распознавание и размытие лиц. Онлайн и бесплатно</h2>
+        <p>Загрузите файлы для распознавания или перетащите их на эту страницу</p>
+
+        <div class="upload_container">
+            <input type="file" id="videoUpload" accept="video/*" style="display: none;">
+            <button class="upload_button" onclick="triggerFileUpload()">Загрузить видео</button>
+        </div>
+
+        <p style="font-style: italic;">или перетащите файл сюда</p>
+    </div>
+
+
+    <script src="static/script.js"></script>
 </body>
 </html>
