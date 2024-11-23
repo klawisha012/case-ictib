@@ -5,8 +5,12 @@ from django.utils.text import get_valid_filename
 import os, subprocess
 from django.views.decorators.csrf import csrf_exempt
 
+processed_files_to_delete = set()
+
 @csrf_exempt
 def index(request):
+    global processed_files_to_delete
+
     if request.method == 'POST':
         file = request.FILES.get("file")
         if not file:
@@ -48,10 +52,20 @@ def index(request):
             # Обработка общих ошибок
             return JsonResponse({"success": False, "error": f"Не удалось запустить процесс: {str(e)}"}, status=500)
         
+        processed_files_to_delete.add(output_file_path)
+        processed_files_to_delete.add(input_file_path)
         processed_file_url = f"{settings.MEDIA_URL}processed/processed_{valid_filename}"
         return JsonResponse({"success": True, "file_url": processed_file_url, "file_name": file.name})
     
     else:
+        for file_path in processed_files_to_delete:
+            try:
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+            except Exception as e:
+                print(f"Не удалось удалить файл {file_path}: {e}")
+        processed_files_to_delete.clear()
+
         return render(request, "mainApp/index.html")
 
 
