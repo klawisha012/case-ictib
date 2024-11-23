@@ -1,9 +1,11 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -25,25 +27,57 @@
                 <p> - приложение для обработки видеофайлов, обеспечивающее приватность за счёт автоматической маскировки лиц.</p>
             </div>
             <div class="intro_image">
-                <img src="static/images/facial_4944629.png" alt="biometry">
+                <img src="{% static 'images/facial_4944629.png' %}" alt="biometry">
             </div>
             
         </div>
     </div>
 
     <div class="content">
-        <h2>Распознавание и размытие лиц. Онлайн и бесплатно</h2>
-        <p>Загрузите файлы для распознавания или перетащите их на эту страницу</p>
+        <h2>Распознавание и размытие лиц. Онлайн и <span style="color: #6a2931;">бесплатно</span></h2>
+        <p>Загрузите видео для распознавания или перетащите его на эту страницу</p>
 
-        <div class="upload_container">
-            <input type="file" id="videoUpload" accept="video/*" style="display: none;">
-            <button class="upload_button" onclick="triggerFileUpload()">Загрузить видео</button>
+        <form id="upload_container" method="POST" action="/upload" enctype="multipart/form-data">
+            <img src="{% static 'images/file_1092216.png' %}" alt="upload_file">
+            <div>
+                <input type="file" id="videoUpload" name="file" accept="video/*"> ,rfldeksajmgbolakiern
+                <label for="videoUpload">Загрузить видео</label>
+                <p style="font-style: italic;">или перетащите файл сюда</p>
+            </div>
+        </form>
+
+        <div id="result"></div>
+    
+        <div id="message_container" class="message_container"></div>
+
+        <div id="download_container" style="display: none; margin-top: 20px;">
+            <button id="download_button" class="download_button">Скачать обработанное видео</button>
         </div>
-
-        <p style="font-style: italic;">или перетащите файл сюда</p>
     </div>
 
+    <footer class="footer">
+        <div class="footer_container">
+            <div class="footer_contacts">
+                <h3>Контакты команды</h3>
+                <ul>
+                    <li>Email: <a href="mailto:team@example.com">team@example.com</a></li>
+                    <li>Телефон: <a href="tel:+1234567890">+1 234 567 890</a></li>
+                    <li>Адрес: пер. Некрасовский, 44, Таганрог</li>
+                </ul>
+            </div>
+            <div class="footer_logos">
+                <h3>Партнеры</h3>
+                <div class="logos">
+                    <img src="{% static 'images/лого.jpg' %}" alt="nkbvs">
+                    <img src="{% static 'images/ictis.png' %}" alt="ictis">
+                </div>
+            </div>
+        </div>
+        <div class="footer_bottom">
+            <p>© 2024 FACEOFF. Все права защищены.</p>
+        </div>
+    </footer>
 
-    <script src="static/script.js"></script>
+    <script src="{% static 'script.js' %}"></script>
 </body>
 </html>
