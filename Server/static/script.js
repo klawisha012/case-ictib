@@ -4,6 +4,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const errorMessage = document.getElementById("error-message");
     const resultContainer = document.getElementById("download_container");
     const downloadButton = document.getElementById("download_button");
+    const fileNameDisplay = document.getElementById("file-name-display");
+    const uploadContainer = document.getElementById("upload_container");
+
+    fileInput.addEventListener("change", function () {
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.textContent = `Выбран файл: ${fileInput.files[0].name}`;
+        } else {
+            fileNameDisplay.textContent = "Файл не выбран";
+        }
+    });
+    
+    uploadContainer.addEventListener("drop", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files; // Устанавливаем файл в input
+            fileNameDisplay.textContent = `Выбран файл: ${files[0].name}`;
+        }
+    });
+
+    uploadContainer.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
 
     // Обработчик отправки формы
     dropZone.addEventListener("submit", function (event) {
@@ -91,7 +117,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data.success) {
                 resultContainer.style.display = "block";
                 downloadButton.onclick = function () {
-                    window.location.href = data.file_url;
+                    const a = document.createElement("a");
+                    a.href = data.file_url;
+                    a.download = data.file_name;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
                 };
             } else {
                 errorMessage.textContent = data.error || "Произошла ошибка при обработке.";

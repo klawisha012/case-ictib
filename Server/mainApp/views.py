@@ -49,7 +49,7 @@ def index(request):
             return JsonResponse({"success": False, "error": f"Не удалось запустить процесс: {str(e)}"}, status=500)
         
         processed_file_url = f"{settings.MEDIA_URL}processed/processed_{valid_filename}"
-        return JsonResponse({"success": True, "file_url": processed_file_url})
+        return JsonResponse({"success": True, "file_url": processed_file_url, "file_name": file.name})
     
     else:
         return render(request, "mainApp/index.html")
