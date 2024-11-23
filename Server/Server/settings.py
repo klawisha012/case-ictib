@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -119,7 +118,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+PATH_TO_APP = os.path.join(BASE_DIR, 'face_off_app', 'app.exe') #face_off_app - папка, app - имя приложения в ней
+MAX_UPLOAD_SIZE = 2 * 1024 * 1024 * 1024  # 2 ГБ
+MAX_UPLOAD_SIZE_MESS = "2 Гб"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),  # Указывает, что папка "static" находится на уровне проекта
 ]
