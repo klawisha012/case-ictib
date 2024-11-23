@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const fileInput = document.getElementById("videoUpload");
     const errorMessage = document.getElementById("error-message");
     const resultContainer = document.getElementById("download_container");
+    const downloadButton = document.getElementById("download_button");
 
     // Обработчик отправки формы
     dropZone.addEventListener("submit", function (event) {
@@ -23,6 +24,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Обработчики для drag-and-drop
+    dropZone.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const file = fileInput.files[0];
+        if (!file) {
+            errorMessage.textContent = "Пожалуйста, выберите файл.";
+            errorMessage.style.display = "block";
+            return;
+        }
+
+        handleFileUpload(file);
+    });
+
     dropZone.addEventListener('dragover', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -42,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const files = e.dataTransfer.files;
         if (files.length > 0) {
-            handleFileUpload(files[0]);
+            fileInput.files = files; // Устанавливаем файл в input
         }
     });
 
@@ -53,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        errorMessage.textContent = "";
-        resultContainer.innerHTML = "";
+        //errorMessage.textContent = "";
+        //resultContainer.innerHTML = "";
 
         const formData = new FormData();
         formData.append("file", file);
@@ -75,7 +89,10 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
             if (data.success) {
-                resultContainer.innerHTML = `<a href="${data.file_url}" download>Скачать обработанное видео</a>`;
+                resultContainer.style.display = "block";
+                downloadButton.onclick = function () {
+                    window.location.href = data.file_url;
+                };
             } else {
                 errorMessage.textContent = data.error || "Произошла ошибка при обработке.";
             }

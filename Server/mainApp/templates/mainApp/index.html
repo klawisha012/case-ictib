@@ -45,14 +45,15 @@
                 <input type="file" id="videoUpload" name="file" accept="video/*">
                 <label for="videoUpload">Загрузить видео</label>
                 <p style="font-style: italic;">или перетащите файл сюда</p>
+                <button type="submit" id="submit_button">Загрузить</button>
             </div>
         </form>
-
-        <div id="error-message" class="message_container"></div>
 
         <div id="download_container" style="display: none; margin-top: 20px;">
             <button id="download_button" class="download_button">Скачать обработанное видео</button>
         </div>
+        <div id="error-message" style="color: red;"></div>
+        
     </div>
 
     <footer class="footer">
