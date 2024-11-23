@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,21 +39,22 @@
         <p>Загрузите видео для распознавания или перетащите его на эту страницу</p>
 
         <form id="upload_container" method="POST" action="/upload" enctype="multipart/form-data">
+            {% csrf_token %}
             <img src="{% static 'images/file_1092216.png' %}" alt="upload_file">
             <div>
-                <input type="file" id="videoUpload" name="file" accept="video/*"> ,rfldeksajmgbolakiern
+                <input type="file" id="videoUpload" name="file" accept="video/*">
                 <label for="videoUpload">Загрузить видео</label>
                 <p style="font-style: italic;">или перетащите файл сюда</p>
+                <p id="file-name-display" style="font-style: italic; color: gray;">Файл не выбран</p>
+                <button type="submit" id="submit_button">Загрузить</button>
             </div>
         </form>
-
-        <div id="result"></div>
-    
-        <div id="message_container" class="message_container"></div>
 
         <div id="download_container" style="display: none; margin-top: 20px;">
             <button id="download_button" class="download_button">Скачать обработанное видео</button>
         </div>
+        <div id="error-message" style="color: red;"></div>
+        
     </div>
 
     <footer class="footer">
@@ -60,16 +62,17 @@
             <div class="footer_contacts">
                 <h3>Контакты команды</h3>
                 <ul>
-                    <li>Email: <a href="mailto:team@example.com">team@example.com</a></li>
-                    <li>Телефон: <a href="tel:+1234567890">+1 234 567 890</a></li>
+                    <li>Email: <a href="mailto:team@example.com">copypastebara@sfedu.com</a></li>
+                    <li>Телефон: <a href="tel:+1234567890">+7-(938)-100-16-77</a></li>
                     <li>Адрес: пер. Некрасовский, 44, Таганрог</li>
                 </ul>
             </div>
             <div class="footer_logos">
                 <h3>Партнеры</h3>
                 <div class="logos">
-                    <img src="{% static 'images/лого.jpg' %}" alt="nkbvs">
+                    <img src="{% static 'images/nkb1.png' %}" alt="nkbvs">
                     <img src="{% static 'images/ictis.png' %}" alt="ictis">
+                    <img src="{% static 'images/cybergrdn1-no-bg-preview (carve.photos).png' %}" alt="cybergarden">
                 </div>
             </div>
         </div>
