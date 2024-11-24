@@ -46,8 +46,22 @@ def index(request):
 
         command = [settings.PATH_TO_APP, input_file_path, output_file_path]
         try:
-            result = subprocess.run(command, capture_output = True, text = True)
-            exit_code = result.returncode
+            result = subprocess.run(command, capture_output = True, text = True, check=True)
+            exit_code = result.returncode # для обработки ошибок от приложения
+
+            inc = 0
+            base_path, ext = os.path.splitext(store_file_path)
+            while os.path.exists(store_file_path):
+                inc += 1
+                store_file_path = f"{base_path}({inc}){ext}"
+
+            shutil.copyfile(output_file_path, store_file_path)
+
+            processed_files_to_delete.add(output_file_path)
+            processed_files_to_delete.add(input_file_path)
+            processed_file_url = f"{settings.MEDIA_URL}blured/blured_{valid_filename}"
+
+            return JsonResponse({"success": True, "file_url": processed_file_url, "file_name": file.name})
         except subprocess.CalledProcessError as e:
             # Обработка ошибок выполнения команды
             error_message = e.stderr.strip() if e.stderr else "Ошибка обработки файла."
@@ -55,14 +69,7 @@ def index(request):
         except Exception as e:
             # Обработка общих ошибок
             return JsonResponse({"success": False, "error": f"Не удалось запустить процесс: {str(e)}"}, status=500)
-        
-        shutil.copy2(output_file_path, store_file_path)
 
-        processed_files_to_delete.add(output_file_path)
-        processed_files_to_delete.add(input_file_path)
-        processed_file_url = f"{settings.MEDIA_URL}blured/blured_{valid_filename}"
-        return JsonResponse({"success": True, "file_url": processed_file_url, "file_name": file.name})
-    
     else:
         for file_path in processed_files_to_delete:
             try:
