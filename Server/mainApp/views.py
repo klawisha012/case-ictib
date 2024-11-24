@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.text import get_valid_filename
 import os, subprocess
 from django.views.decorators.csrf import csrf_exempt
+import shutil
 
 processed_files_to_delete = set()
 
@@ -36,9 +37,12 @@ def index(request):
         os.makedirs(output_dir, exist_ok=True)
         output_file_path = os.path.join(output_dir, f"blured_{valid_filename}")
 
+        local_storage_dir = os.path.join(settings.MEDIA_ROOT, "local_storage")
+        os.makedirs(local_storage_dir, exist_ok=True)
+        store_file_path = os.path.join(local_storage_dir, f"stored_blured_{valid_filename}")
+
         if not os.path.exists(settings.PATH_TO_APP):
             return JsonResponse({"success": False, "error": f"Приложение не найдено: {settings.PATH_TO_APP}"}, status=500)
-
 
         command = [settings.PATH_TO_APP, input_file_path, output_file_path]
         try:
@@ -52,6 +56,8 @@ def index(request):
             # Обработка общих ошибок
             return JsonResponse({"success": False, "error": f"Не удалось запустить процесс: {str(e)}"}, status=500)
         
+        shutil.copy2(output_file_path, store_file_path)
+
         processed_files_to_delete.add(output_file_path)
         processed_files_to_delete.add(input_file_path)
         processed_file_url = f"{settings.MEDIA_URL}blured/blured_{valid_filename}"
