@@ -32,9 +32,9 @@ def index(request):
             for chunk in file.chunks():
                 f.write(chunk)
 
-        output_dir = os.path.join(settings.MEDIA_ROOT, "processed")
+        output_dir = os.path.join(settings.MEDIA_ROOT, "blured")
         os.makedirs(output_dir, exist_ok=True)
-        output_file_path = os.path.join(output_dir, f"processed_{valid_filename}")
+        output_file_path = os.path.join(output_dir, f"blured_{valid_filename}")
 
         if not os.path.exists(settings.PATH_TO_APP):
             return JsonResponse({"success": False, "error": f"Приложение не найдено: {settings.PATH_TO_APP}"}, status=500)
@@ -54,7 +54,7 @@ def index(request):
         
         processed_files_to_delete.add(output_file_path)
         processed_files_to_delete.add(input_file_path)
-        processed_file_url = f"{settings.MEDIA_URL}processed/processed_{valid_filename}"
+        processed_file_url = f"{settings.MEDIA_URL}blured/blured_{valid_filename}"
         return JsonResponse({"success": True, "file_url": processed_file_url, "file_name": file.name})
     
     else:
